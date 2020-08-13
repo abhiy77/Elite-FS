@@ -1,0 +1,176 @@
+/* 04/06/2020 - HOME
+ * 
+ * HACKERRANK - COIN ON THE TABLE
+ * Input Format:
+-------------
+Line-1 -> Three integers N, M, and K respectively. 
+Next N Lines ->contains M letters, with letter set [U,R,D,L,*]
+
+Output Format:
+--------------
+Print an integer as answer, if you achieve it.
+Otherwise, print -1.
+
+Sample Input:
+-------------
+2 2 1
+RD
+*L
+
+Sample Output:
+--------------
+1
+
+--------Testcases-------------
+case =1
+input =2 2 1
+RD
+*L
+output =1
+
+case =2
+input =2 2 3
+RD
+*L
+output =0
+
+case =3
+input =20 17 47
+DRLULLRRRLRDLRRLU
+URUURLRLLLDULRRRR
+DRDLDDLDRRDRURRLR
+DRRRRRRLDULDDUDLD
+DULRDDULDUDULRDUD
+LRURUDURRUURDDUDL
+URURDLRUULRRDLDLR
+DLRUDLDRUUDULUDUU
+*ULLURDRDUURLDRDR
+ULDUDUUULLURURURR
+LDRDLDRRLDDRRLRLD
+RDDLURRRDDLRDURLD
+ULRLRLRRLLLRRURRL
+RLLLDRDURLRURLUDD
+DRLDURRLURUULLRDU
+RURRUDLLLDDDRUUUD
+UUUUDDLRURULRRDRD
+URDUUDRDLDRLLULRU
+DRDUUULUUDURULDDL
+LLULDRLRRRUDLDRRU
+output =3
+
+case =4
+input =18 42 42
+DUDDDLLRURULLDLURURLDLRULDURLDDURLUURLURRU
+DLDLURDRRLDDLDULRUDURDDUURDLLLLRRLDUULLDDD
+RULURDLLUULDRDDLLDLRDUDRDDRRRDRUDRURURLRLD
+RLUDLLLUURRDRRDRDRLDLDDDULLRRLLRLDLUDRDDUU
+RDDRURLRUUDLLRLULLLLULLDLUDRLDRDDURDLRDRLL
+LDRDDDLDUDLDUDRLURRDLURRRDLDURLULDDURDUDLU
+UDUULDRUULUDL*UDULUDLLRRLULULUDULURLRDULLL
+UDLDRLDLDLRRULURDRUDRLDLLDDRLRRLRUURLUDULR
+RULDDLUULRRDRDLUULRULDRRUULULLUDRLLRLLDRRR
+ULRLDDDUUDLLRLURRURLDRULRRDUDRULUDDRDLULDD
+DDDRDRRULRLUUDRRDDLDUDRLRRRDLRDRLUDRULLLDR
+DUDULULRLUDRLRLLLUUURRDLLRRLLLDUDLDRDDURRR
+UULDRUULRDDRDLUDLLLULULRRUUUULDDDRRRUDLLDU
+LLLURRRDRUUULDLLLDDDLLRLDLLURUDLRLDLDDLLUL
+LLLDDDDULDRURULULLULLUDRDURRRRUUURRLURDURL
+RDDDDDLRRRRLRUDRLURRLRRUUUUURULULRRDRUUDUU
+RDUURUULLDULRUULRRLLDDLRURDULRDLUDDDURDRUD
+LUDLDDRDURUDLLLDRLRRRLRDULLLDLDUUUDRRDRLRU
+output =8
+
+case =5
+input =23 34 99
+URUDDLLLLLDLLURRDRDUDDRRDDLRRUDULR
+LLLDRRDULUDUUUDLRRDDULLRUUURLRLDRR
+DRULLDRDRRRRLDRLRRDUUUDLRRURRLUULD
+ULDRURLDULUDDLULDUDLRLULDLRLURDUUD
+LDUULDUULULLDUURDLRRUDLLUDLRDULDLR
+LDURRRDRUDUDLUUURDUURDUDLDLLDRDDRD
+UULDURLRRRURLRRDULRULUULDDLDLRDDUU
+DDRRDLDRLRLDDLLLDDDDDLDUDDDRLURLDD
+UULRDRUDLDULDDRDUULUURRLDURDDRDLUD
+URULDULDLUDDUDDRDDRUURLDRUULDLLUDR
+LRLDUURRLLDLLRRURLRRUDUDDLRDLLULUD
+UDLRDLLLLRULRLLRLLLRUULLRLRLLLDLLL
+RRURDDDDLDLURLDULLRDRUURRRLRDUURDR
+LURURDDULLUULLRDLDLDUUDDRDURDRDLRD
+DRDUUDRUULLLLRULRRRULRLDLURRDRRURD
+UUUURULLURLDLRUUULDLDLRURDDDUULLUR
+DLDDDLDDRLDRUDULDRURRDRDRURRLURLRU
+UDLUDDLDDULDDDRUDRLLRRLULDDLDRDDRU
+LRRRDRRDUURRDLRUURUDLRRDLUUDRRDL*L
+UDDUDLLDRURDDUULDULDRDDLDRDUDRURLL
+RRRRLRUULULUULLRDRDDLDLDLLUURRURLR
+DLRURUDLLURRRDURDRRRRDLDRURULLLRRR
+RLLRLUDDLLLDLDLUURLUUUDLRDDUURURDD
+output =16
+
+case =6
+input =17 12 23
+LUDRDRUULRLR
+RRLUURULRDUR
+LURUDDDRURRR
+ULULURDRDDLL
+UULRDULLDRUL
+UUDULDDLDRDL
+UDDLLDRULULU
+ULLLRULRRURU
+DDULLLLLLDRD
+ULRRRLUDDLRD
+DDR*URURURDD
+DDLDDLULRULD
+RURDLLDDLLLR
+LDDURLDUDDLU
+UUDUDDDDDRDD
+DULDURLRRRRR
+LDDRLUDLDLRU
+output =8
+
+ */
+package Elite;  
+import java.util.*;
+
+public class MinimumChangesToReachGoal {
+
+    public static void main(String[] args) {
+        Scanner cin = new Scanner(System.in);
+        int n = cin.nextInt();
+        int m = cin.nextInt();
+        int K = cin.nextInt();
+        int x = 0, y = 0;
+        char a[][] = new char[n][];
+        for (int i=0; i<n; i++) {
+            a[i] = cin.next().toCharArray();
+            for (int j=0; j<m; j++)
+                if (a[i][j] == '*') {
+                    x = i;
+                    y = j;
+                }
+        }
+        int f[][][] = new int[K + 1][n][m];
+        int ans = 1 << 29;
+        for (int k=0; k<=K; k++)
+            for (int i=0; i<n; i++)
+                for (int j=0; j<m; j++) 
+                    if (k == 0) f[k][i][j] = i == 0 && j == 0 ? 0 : 1 << 29;
+                    else {
+                        int res = 1 << 29;
+                        if (i > 0)     res = Math.min(res, f[k - 1][i - 1][j] + (a[i - 1][j] == 'D' ? 0 : 1));
+                        if (i < n - 1) res = Math.min(res, f[k - 1][i + 1][j] + (a[i + 1][j] == 'U' ? 0 : 1));
+                        if (j > 0)     res = Math.min(res, f[k - 1][i][j - 1] + (a[i][j - 1] == 'R' ? 0 : 1));
+                        if (j < m - 1) res = Math.min(res, f[k - 1][i][j + 1] + (a[i][j + 1] == 'L' ? 0 : 1));
+
+                        f[k][i][j] = res;
+                    }
+
+        for (int k=0; k<=K; k++)
+            ans = Math.min(ans, f[k][x][y]);
+
+        if (ans < (1 << 29)) System.out.println(ans);
+        else System.out.println(-1);
+
+        cin.close();
+    }
+}
