@@ -68,12 +68,13 @@ public class DistributingChocolatesForStudents {
 		for(int i=n-2;i>=0;i--) {
 			if(arr[i] > arr[i+1]) right[i] = right[i+1] + 1;
 		}
-		
+	
 		int count = 0;
 		
 		for(int i=0;i<n;i++) {
 			count += Math.max(left[i], right[i]);
 		}
+		
 		System.out.println(count);
 	}
 }

@@ -53,6 +53,7 @@ import java.util.*;
 public class BiggestNumber {
 	
 	public static int[] maxNumber(int[] A, int[] B, int k) {
+		
         int m = A.length, n = B.length;
         if (m+n < k) return new int[0];
 

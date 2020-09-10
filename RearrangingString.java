@@ -62,4 +62,5 @@ public class RearrangingString {
 		if(max > rem+1) System.out.println(false);
 		else System.out.println(true);
 	}
+	
 }
